@@ -37,16 +37,20 @@ const position = ref<Position>({ x: 0, y: 0 }) //元素坐标
 const start = (e: PointerEvent) => {
   if (e.which !== 1) return
 
-  const rect = itemRef.value!.getBoundingClientRect()
+  const childRect = itemRef.value!.getBoundingClientRect()
+  const parentRect = parent.gridRef.value!.getBoundingClientRect()
+  console.log('start', childRect, parentRect)
   position.value = {
-    x: rect.x,
-    y: rect.y
+    x: childRect.x - parentRect.x,
+    y: childRect.y - parentRect.y
   }
 
   const pos = {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
+    x: e.clientX - childRect.left + parentRect.left,
+    y: e.clientY - childRect.top + parentRect.top
   }
+  console.log('pos', pos)
+
   pressedDelta.value = pos
 
   // 传给父组件
@@ -85,7 +89,7 @@ const initStyle = computed(() => {
 
   return {
     transform: `translate(
-        ${props.x * (marginX + width) + marginX}px, 
+        ${props.x * (marginX + width) + marginX}px,
         ${props.y * (marginY + height) + marginY}px
     )`,
     width: `${props.w * width + (props.w - 1) * marginX}px`,

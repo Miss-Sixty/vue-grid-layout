@@ -12,6 +12,7 @@ const layout = ref([
 </script>
 
 <template>
+  <p>11</p>
   <GridLayout v-model="layout" :rowHeight="60" :cols="5" :margin="[10, 10]">
     <GridItem
       v-for="item in layout"

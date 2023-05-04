@@ -75,7 +75,8 @@ provide('parent', {
   oldChildItem,
   newPosition,
   updateModelValue,
-  moveElementAwayFromCollision
+  moveElementAwayFromCollision,
+  gridRef
 })
 
 onMounted(() => {
@@ -85,7 +86,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid" ref="gridRef">
+  <div  class="grid" ref="gridRef">
     <GridItem
       v-show="dragging"
       :x="newPosition.x"
@@ -94,7 +95,7 @@ onMounted(() => {
       :h="oldChildItem.h"
       style="background-color: cadetblue"
       id="-1"
-      >{{ newPosition }}
+      >
     </GridItem>
     <slot />
   </div>
