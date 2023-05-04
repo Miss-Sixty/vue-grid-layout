@@ -38,7 +38,7 @@ const parentBottom = () => {
   }px`
 }
 
-const oldChildItem = ref({ x: 0, y: 0, w: 0, h: 0 })
+const oldChildItem = ref({ x: 0, y: 0, w: 0, h: 0, id: '' })
 const dragging = ref(false)
 const newPosition = ref({ x: 0, y: 0 })
 
@@ -54,13 +54,28 @@ const updateModelValue = (id: string) => {
   emit('update:modelValue', newModelValue)
 }
 
+// 当getGridItem计算的位置有其他元素时，重排有关联的元素
+// TODO: 未完成
+const moveElementAwayFromCollision = () => {
+  const { x, y } = newPosition.value
+  const newModelValue = props.modelValue.map((item: any) => {
+    if (item.id === oldChildItem.value.id) return item
+    if (item.x === x && item.y === y) {
+      return { ...item, y: item.y + 1 }
+    }
+    return item
+  })
+  emit('update:modelValue', newModelValue)
+}
+
 provide('parent', {
   margin: props.margin,
   size,
   dragging,
   oldChildItem,
   newPosition,
-  updateModelValue
+  updateModelValue,
+  moveElementAwayFromCollision
 })
 
 onMounted(() => {

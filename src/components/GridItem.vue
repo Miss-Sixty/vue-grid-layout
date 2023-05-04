@@ -64,6 +64,8 @@ const move = (e: PointerEvent) => {
   y = e.clientY - pressedDelta.value.y
   position.value = { x, y }
   parent.newPosition.value = getGridItem(x, y)
+
+  parent.moveElementAwayFromCollision()
 }
 
 const end = () => {
