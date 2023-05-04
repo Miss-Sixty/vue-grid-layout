@@ -25,3 +25,9 @@ const layout = ref([
     </GridItem>
   </GridLayout>
 </template>
+
+<style>
+body {
+  margin: 0;
+}
+</style>
