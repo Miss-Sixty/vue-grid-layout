@@ -30,8 +30,8 @@ export default defineConfig({
     lib: {
       // 组件的入口文件
       entry: './src/components/index.js',
-      name: 'vue-grid-layout',
-      fileName: 'vue-grid-layout'
+      name: 'vue3-grid',
+      fileName: 'vue3-grid'
     },
     rollupOptions: {
       // 确保外部化处理不想打包进库的依赖
