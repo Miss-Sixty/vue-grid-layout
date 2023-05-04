@@ -51,7 +51,7 @@ const start = (e: PointerEvent) => {
 
   // 传给父组件
   parent.oldChildItem.value = { ...props }
-  parent.dragging.value = dragging
+  parent.dragging.value = dragging.value
   console.log('x', parent.newPosition)
 
   parent.newPosition.value = { x: props.x, y: props.y }
@@ -70,6 +70,7 @@ const end = () => {
   if (!pressedDelta.value) return
   pressedDelta.value = undefined
   parent.updateModelValue(props.id)
+  setTimeout(() => (parent.dragging.value = dragging.value), 200)
 }
 
 useEventListener(itemRef, 'pointerdown', start)
