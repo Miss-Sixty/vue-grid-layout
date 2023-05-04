@@ -1,7 +1,7 @@
 {
   "name": "vue3-grid",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "description": "可拖动的vue3网格布局",
   "keywords": [
