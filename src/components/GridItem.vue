@@ -18,6 +18,10 @@ const props = defineProps({
   h: {
     type: Number,
     required: true
+  },
+  id: {
+    type: String,
+    required: true
   }
 })
 
@@ -48,6 +52,9 @@ const start = (e: PointerEvent) => {
   // 传给父组件
   parent.oldChildItem.value = { ...props }
   parent.dragging.value = dragging
+  console.log('x', parent.newPosition)
+
+  parent.newPosition.value = { x: props.x, y: props.y }
 }
 
 const move = (e: PointerEvent) => {
@@ -56,11 +63,13 @@ const move = (e: PointerEvent) => {
   x = e.clientX - pressedDelta.value.x
   y = e.clientY - pressedDelta.value.y
   position.value = { x, y }
+  parent.newPosition.value = getGridItem(x, y)
 }
 
 const end = () => {
   if (!pressedDelta.value) return
   pressedDelta.value = undefined
+  parent.updateModelValue(props.id)
 }
 
 useEventListener(itemRef, 'pointerdown', start)
@@ -87,14 +96,25 @@ const dragStyle = computed(() => {
 
   return {
     transform: `translate(${x}px, ${y}px)`,
-    zIndex: 2
+    zIndex: 2,
+    transition: 'none'
   }
 })
+
+// 将移动的坐标转换成网格坐标
+const getGridItem = (x: number, y: number) => {
+  const [marginX, marginY] = parent.margin
+  const [width, height] = parent.size.value
+
+  const gridX = Math.round((x - marginX) / (width + marginX))
+  const gridY = Math.round((y - marginY) / (height + marginY))
+
+  return { x: gridX, y: gridY }
+}
 </script>
 
 <template>
   <div ref="itemRef" class="item" :style="{ ...initStyle, ...dragStyle }">
-    {{ position }}
     <slot />
   </div>
 </template>
@@ -104,5 +124,6 @@ const dragStyle = computed(() => {
   position: absolute;
   user-select: none;
   background-color: antiquewhite;
+  transition: transform 0.2s ease;
 }
 </style>

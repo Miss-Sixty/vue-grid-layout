@@ -40,12 +40,27 @@ const parentBottom = () => {
 
 const oldChildItem = ref({ x: 0, y: 0, w: 0, h: 0 })
 const dragging = ref(false)
+const newPosition = ref({ x: 0, y: 0 })
+
+// 更新modelValue
+const updateModelValue = (id: string) => {
+  const { x, y } = oldChildItem.value
+  const { x: newX, y: newY } = newPosition.value
+  if (x === newX && y === newY) return
+
+  const newModelValue = props.modelValue.map((item: any) => {
+    return item.id === id ? { ...item, x: newX, y: newY } : item
+  })
+  emit('update:modelValue', newModelValue)
+}
 
 provide('parent', {
   margin: props.margin,
   size,
   dragging,
-  oldChildItem
+  oldChildItem,
+  newPosition,
+  updateModelValue
 })
 
 onMounted(() => {
@@ -58,12 +73,13 @@ onMounted(() => {
   <div class="grid" ref="gridRef">
     <GridItem
       v-show="dragging"
-      :x="oldChildItem.x"
-      :y="oldChildItem.y"
+      :x="newPosition.x"
+      :y="newPosition.y"
       :w="oldChildItem.w"
       :h="oldChildItem.h"
       style="background-color: cadetblue"
-      >999
+      id="-1"
+      >{{ newPosition }}
     </GridItem>
     <slot />
   </div>

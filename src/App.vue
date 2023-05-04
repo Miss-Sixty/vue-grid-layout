@@ -13,7 +13,14 @@ const layout = ref([
 
 <template>
   <GridLayout v-model="layout" :cols="5" :margin="[10, 10]">
-    <GridItem v-for="item in layout" :key="item.id" :x="item.x" :y="item.y" :w="item.w" :h="item.h"
+    <GridItem
+      v-for="item in layout"
+      :key="item.id"
+      :id="item.id"
+      :x="item.x"
+      :y="item.y"
+      :w="item.w"
+      :h="item.h"
       >{{ item.id }}
     </GridItem>
   </GridLayout>
